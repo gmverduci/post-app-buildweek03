@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment.development';
 import { Auth } from '../interface/auth.interface';
 import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, throwError } from 'rxjs';
+import { Register } from '../interface/register.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +16,12 @@ export class AuthService {
     private userLog = new BehaviorSubject<Auth | null>(null);
     loggato$ = this.userLog.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
+
+    register(data: Register) {
+        return this.http.post(`${this.apiUrl}register`, data).pipe(
+        catchError(this.errors))
+    }
 
     login(data: { email: string; password: string }) {
         return this.http.post<Auth>(`${this.apiUrl}login`, data).pipe(
@@ -27,6 +34,12 @@ export class AuthService {
             }),
             catchError(this.errors)
         );
+    }
+
+    logout() {
+        this.userLog.next(null);
+        localStorage.removeItem('user');
+        this.router.navigate(['/']);
     }
 
     private errors(err: any) {
