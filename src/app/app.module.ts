@@ -8,11 +8,52 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import {
+    SocialLoginModule,
+    SocialAuthServiceConfig,
+    GoogleLoginProvider,
+} from '@abacritt/angularx-social-login';
+import { GoogleSigninComponent } from './components/google-signin/google-signin.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, RegisterComponent, HomeComponent, LoginComponent],
-    imports: [BrowserModule, AppRoutingModule, NgbModule, FormsModule, HttpClientModule],
-    providers: [],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        RegisterComponent,
+        HomeComponent,
+        LoginComponent,
+        GoogleSigninComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        SocialLoginModule,
+    ],
+    providers: [
+        {
+            provide: 'SocialAuthServiceConfig',
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider(
+                            '172576683473-5tlu2maqjuedqe4fgmjo06vailuev76e.apps.googleusercontent.com',
+                            {
+                                scopes: 'openid profile email',
+                            }
+                        ),
+                    },
+                ],
+                onError: (err) => {
+                    console.error(err);
+                },
+            } as SocialAuthServiceConfig,
+        },
+    ],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
