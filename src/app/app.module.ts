@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import {
@@ -14,15 +13,20 @@ import {
     GoogleLoginProvider,
 } from '@abacritt/angularx-social-login';
 import { GoogleSigninComponent } from './components/google-signin/google-signin.component';
+import { PostComponent } from './components/post/post.component';
+import { PhotoComponent } from './components/photo/photo.component';
+import { AlbumComponent } from './components/album/album.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        RegisterComponent,
         HomeComponent,
         LoginComponent,
         GoogleSigninComponent,
+        PostComponent,
+        PhotoComponent,
+        AlbumComponent,
     ],
     imports: [
         BrowserModule,
