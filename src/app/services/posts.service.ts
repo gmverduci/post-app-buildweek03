@@ -15,4 +15,8 @@ export class PostsService {
   getPosts() {
     return this.http.get<Post[]>(`${this.apiURL}posts`);
 }
+
+newPost(data: Post) {
+  return this.http.post<Post>(`${this.apiURL}posts`, data);
+}
 }
