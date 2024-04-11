@@ -17,6 +17,7 @@ import { PostComponent } from './components/post/post.component';
 import { PhotoComponent } from './components/photo/photo.component';
 import { AlbumComponent } from './components/album/album.component';
 import { UserComponent } from './components/user/user.component';
+import { BrowseComponent } from './components/browse/browse.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         PhotoComponent,
         AlbumComponent,
         UserComponent,
+        BrowseComponent,
         NavbarComponent,
     ],
     imports: [
