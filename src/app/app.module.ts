@@ -16,6 +16,7 @@ import { GoogleSigninComponent } from './components/google-signin/google-signin.
 import { PostComponent } from './components/post/post.component';
 import { PhotoComponent } from './components/photo/photo.component';
 import { AlbumComponent } from './components/album/album.component';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { AlbumComponent } from './components/album/album.component';
         PostComponent,
         PhotoComponent,
         AlbumComponent,
+        UserComponent,
     ],
     imports: [
         BrowserModule,
