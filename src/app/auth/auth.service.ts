@@ -7,21 +7,27 @@ import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { Register } from '../interface/register.interface';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     apiUrl = environment.apiURL;
-    private userLog = new BehaviorSubject<Auth | null>(null);
-    loggato$ = this.userLog.asObservable();
+    jwtHelper = new JwtHelperService();
 
-    constructor(private http: HttpClient, private router: Router) {}
+    private authSub = new BehaviorSubject<Auth | null | SocialUser>(null);
+    user$ = this.authSub.asObservable();
 
-    register(data: Register) {
-        return this.http.post(`${this.apiUrl}register`, data).pipe(
-        catchError(this.errors))
+    constructor(private http: HttpClient, private router: Router ,private authService: SocialAuthService) {
+        this.authService.authState.subscribe((user) => {
+            this.authSub.next(user);
+            localStorage.setItem('user', JSON.stringify(user));
+            this.router.navigate(['/']);
+        });
     }
+
 
     login(data: { email: string; password: string }) {
         return this.http.post<Auth>(`${this.apiUrl}login`, data).pipe(
@@ -29,17 +35,32 @@ export class AuthService {
                 console.log('Auth:', data);
             }),
             tap((data) => {
-                this.userLog.next(data);
+                this.authSub.next(data);
                 localStorage.setItem('user', JSON.stringify(data));
             }),
             catchError(this.errors)
         );
     }
 
+    signup(data: Register) {
+        return this.http
+            .post(`${this.apiUrl}register`, data)
+            .pipe(catchError(this.errors));
+    }
+
     logout() {
-        this.userLog.next(null);
+        this.authSub.next(null);
         localStorage.removeItem('user');
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
+    }
+
+    estore() {
+        const userJson = localStorage.getItem('user');
+        if (!userJson) {
+            return;
+        }
+        const user: Auth = JSON.parse(userJson);
+        this.authSub.next(user);
     }
 
     private errors(err: any) {
