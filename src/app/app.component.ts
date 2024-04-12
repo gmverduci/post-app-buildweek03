@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from './services/users.service';
 import { User } from './interface/user.interface';
 import { AuthService } from './auth/auth.service';
+import { SocialUser } from '@abacritt/angularx-social-login';
+import { Auth } from './interface/auth.interface';
 
 @Component({
   selector: 'app-root',
@@ -10,19 +12,13 @@ import { AuthService } from './auth/auth.service';
 })
 export class AppComponent implements OnInit{
   title = 'post-app-buildweek03';
-  users!: User[];
+  users!: Auth | null | SocialUser;
   user!: User;
 
-  constructor(private userSrvc: UsersService, private authSrv: AuthService) { 
-    this.userSrvc.getUsers().subscribe((data) => {
+  constructor(private authSrv: AuthService) { 
+    this.authSrv.user$.subscribe((data) => {
       this.users = data;
-      console.log(this.users)
-    })
-
-    this.userSrvc.getUser(3).subscribe((data) =>{
-      this.user = data;
-      console.log(this.user)
-    })
+    });
   }
 
   ngOnInit(): void {

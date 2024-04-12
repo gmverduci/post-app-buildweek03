@@ -65,24 +65,20 @@ export class AuthService {
 
     getCurrentUserId(): number | null {
         const user = this.authSub.getValue();
-
-        if (!user) {
+    
+        console.log('Current user:', user); // Debugging log to check the current user object
+    
+        // Type guard to check if the user object has a 'user' property
+        if (!user || !('user' in user)) {
+            console.error('No user is currently logged in or user object is not structured as expected.');
             return null; 
         }
-
-        if ('userId' in user) {
-            return user.userId as number | null;
-        }
-
-        if ('id' in user && typeof user.id === 'number') {
-            return user.id;
-        }
-
-        if ('id' in user && typeof user.id === 'string') {
-            return parseInt(user.id, 10);
-        }
-
-        return null; // Nessun tipo corrispondente
+    
+        // Now TypeScript knows that 'user' is of a type that has a 'user' property
+        // Correctly access the id from the user object
+        const userId = user.user.id;
+        console.log('User ID found:', userId); // Debugging log for the user ID
+        return userId;
     }
 
     private errors(err: any) {
