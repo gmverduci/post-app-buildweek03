@@ -19,4 +19,8 @@ export class PostsService {
         const postWithDate: Post = { ...data, date: new Date().toISOString() };
         return this.http.post<Post>(`${this.apiURL}posts`, postWithDate);
     }
+
+    deletePost(id: number) {
+        return this.http.delete(`${this.apiURL}posts/${id}`);
+    }
 }
