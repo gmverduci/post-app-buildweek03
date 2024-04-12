@@ -18,8 +18,9 @@
 }
 .over:hover{
     scale: 1.1;
+    cursor: pointer;
 }
-.card-post {
+.card-post,.grad {
     background: #ff416c;
     background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
     background: linear-gradient(to right, #ff4b2b, #ff416c);
