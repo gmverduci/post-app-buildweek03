@@ -5,6 +5,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { BrowseComponent } from './components/browse/browse.component';
 import { UserComponent } from './components/user/user.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: "user",
     component: UserComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "todolist",
+    component: ToDoListComponent,
     canActivate: [AuthGuard]
   },
   

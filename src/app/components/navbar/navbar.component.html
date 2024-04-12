@@ -12,10 +12,10 @@
               [routerLinkActiveOptions]="{ exact: true }">Home</a>
           </li>
           <li *ngIf="user" class="nav-item">
-            <a class="nav-link text-white" [routerLink]="['/film']" routerLinkActive="active">Film</a>
+            <a class="nav-link text-white" [routerLink]="['/browse']" routerLinkActive="active">Browse</a>
           </li>
           <li *ngIf="user" class="nav-item">
-            <a class="nav-link text-white" [routerLink]="['/profile']" routerLinkActive="active">Profilo</a>
+            <a class="nav-link text-white" [routerLink]="['/todolist']" routerLinkActive="active">Todolist</a>
           </li>
           <li *ngIf="user" class="nav-item">
             <a class="nav-link text-white" [routerLink]="['/users']" routerLinkActive="active">Lista utenti</a>
