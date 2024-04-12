@@ -18,7 +18,7 @@
             <a class="nav-link text-white" [routerLink]="['/todolist']" routerLinkActive="active">Todolist</a>
           </li>
           <li *ngIf="user" class="nav-item">
-            <a class="nav-link text-white" [routerLink]="['/users']" routerLinkActive="active">Lista utenti</a>
+            <a class="nav-link text-white" [routerLink]="['/user']" routerLinkActive="active">Lista utenti</a>
           </li>
           <li *ngIf="!user" class="nav-item">
             <a class="nav-link text-white" [routerLink]="['/login']" routerLinkActive="active">Login</a>
@@ -28,22 +28,28 @@
       </div>
     </div>
    <div *ngIf="user" class="d-flex align-items-center">
-    
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell-fill text-black" viewBox="0 0 16 16">
-      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
-    </svg> 
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#">Something else here</a></li>
-      </ul>
-    </div>
-
+    <div class="row me-3">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block">
+          <button type="button" class="btn " id="dropdownBasic1" ngbDropdownToggle>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell-fill text-black" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+            </svg>
+          </button>
+          <div ngbDropdownMenu class="dropdown-menu-end" aria-labelledby="dropdownBasic1">
+            
+            <ul ngbDropdownItem style="list-style: none;"> 
+                <!-- <li class="" *ngFor=""></li> -->
+            </ul>
+   
+          </div>
+        </div>
+      </div>
+      </div>
+  
     <button type="button" class="btn btn-light float-end me-5" *ngIf="user" (click)="logout()">
       Logout
     </button>
    </div>
+
   </nav>
