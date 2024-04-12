@@ -1,19 +1,19 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from 'src/app/auth/auth.service';
 import { PostsService } from 'src/app/services/posts.service';
 import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/interface/user.interface';
 import { Post } from 'src/app/interface/post.interface';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
     selector: 'app-browse',
     templateUrl: './browse.component.html',
     styleUrls: ['./browse.component.scss'],
 })
-export class BrowseComponent {
+export class BrowseComponent implements OnInit {
     items: string[] = [];
     users!: User[];
 
@@ -23,7 +23,8 @@ export class BrowseComponent {
         private postSrv: PostsService,
         private cdr: ChangeDetectorRef,
         private usersSrv: UsersService,
-        private notifSrv: NotificationsService
+        private notifSrv: NotificationsService,
+        private authSrv: AuthService
     ) {
         // customize default values of modals used by this component tree
         config.backdrop = 'static';
@@ -31,57 +32,53 @@ export class BrowseComponent {
     }
 
     ngOnInit() {
-        console.log('ngOnInit attivato');
+        console.log('ngOnInit activated');
 
         this.usersSrv.getUsers().subscribe((users) => {
             this.users = users;
             this.items = users.map((user) => user.username);
-            console.log('items[]: ', this.items);
+            console.log('items[]:', this.items);
             this.cdr.detectChanges();
         });
     }
 
-    async processPostContent(
-        content: NgForm['value']
-    ): Promise<NgForm['value']> {
-        const mentionRegex = /@(\w+)/g;
-        let processedContent = content;
-
-        let match;
-        while ((match = mentionRegex.exec(content)) !== null) {
-            const username = match[1];
-            const userId = await this.getUserIdByUsername(username);
-
-            if (userId) {
-                const link = `<a routerLink="/user/${userId}">@${username}</a>`;
-                processedContent = processedContent.replace(
-                    `@${username}`,
-                    link
-                );
-            }
-        }
-
-        return processedContent;
+    async processPostContent(content: NgForm['value']): Promise<{ processedContent: string, originalContent: NgForm['value'] }> {
+        console.log('Processing post content...');
+    
+        const processedContent = content.body;
+    
+        console.log('Processed content:', processedContent);
+        return { processedContent, originalContent: content };
     }
 
     extractMentions(content: string): string[] {
-        const mentionRegex = /@(\w+)/g;
+        const mentionRegex = /@(\w+)\b/g;
         let match;
         const mentions = [];
+        console.log('Content:', content); // Controlla il contenuto per vedere se ci sono menzioni
         while ((match = mentionRegex.exec(content)) !== null) {
+            console.log('Match:', match); // Controlla ogni match trovato
             mentions.push(match[1]);
         }
+        console.log('Mentions extracted:', mentions); // Controlla le menzioni estratte
         return mentions;
     }
 
     async getUserIdByUsername(username: string): Promise<number | null> {
+        console.log('Getting user ID for username:', username);
+
         const user = await this.usersSrv
             .getUserByUsername(username)
             .toPromise();
-        return user ? user.id : null;
+        const userId = user ? user.id : null;
+
+        console.log('User ID:', userId);
+        return userId;
     }
 
     async getTaggedUsers(mentions: string[]): Promise<User[]> {
+        console.log('Getting tagged users...');
+
         const taggedUsers: User[] = [];
         for (const mention of mentions) {
             const user = await this.usersSrv
@@ -91,18 +88,28 @@ export class BrowseComponent {
                 taggedUsers.push(user);
             }
         }
+
+        console.log('Tagged users:', taggedUsers);
         return taggedUsers;
     }
 
     async notifyTaggedUsers(taggedUsers: User[], newPost: Post): Promise<void> {
-        for (const user of taggedUsers) {
-            await this.notifSrv.addNotification({
-                userId: user.id,
-                type: 'mention',
-                message: `You were mentioned`, //voglio creare un currentUser - utente loggato - per indicare anche da chi si è menzionati
-                postId: newPost.id,
-            });
-        }
+        console.log('Notifying tagged users...');
+
+        const notifications = taggedUsers.map((user) => ({
+            userId: user.id,
+            type: 'mention',
+            message: `You were mentioned by`,
+            postId: newPost.id,
+        }));
+
+        await Promise.all(
+            notifications.map((notification) =>
+                this.notifSrv.addNotification(notification).toPromise()
+            )
+        );
+
+        console.log('Tagged users notified.');
     }
 
     open(content: any) {
@@ -110,31 +117,31 @@ export class BrowseComponent {
     }
 
     async save(form: NgForm) {
-        const processedContent = await this.processPostContent(form.value);
+        const { processedContent, originalContent } = await this.processPostContent(form.value);
         const mentions = this.extractMentions(processedContent);
         const taggedUsers = await this.getTaggedUsers(mentions);
-
-        const newPost = this.postSrv.newPost(processedContent).subscribe();
-
-        this.postSrv.newPost(processedContent).subscribe(
-            (newPost) => {
-                this.notifyTaggedUsers(taggedUsers, newPost)
-                    .then(() => {
-                        // this.router.navigate(['/']);
-                    })
-                    .catch((error) => {
-                        console.error('Error notifying tagged users:', error);
-                    });
+    
+        const newPost: Post = {
+            userId: this.authSrv.getCurrentUserId() || 0, 
+            id: 0, 
+            title: originalContent.title, 
+            body: processedContent,
+            date: new Date().toISOString(), 
+        };
+    
+        this.postSrv.newPost(newPost).subscribe(
+            (createdPost: Post) => {
+                console.log('New post created:', createdPost);
+                this.notifyTaggedUsers(taggedUsers, createdPost).then(() => {
+                    // Success
+                }).catch((error) => {
+                    console.error('Error notifying tagged users:', error);
+                });
             },
             (error) => {
                 console.error('Error creating new post:', error);
             }
         );
-
     }
+    
 }
-
-// Immagine nel form nuovo post dev'essere opzionale
-// Non mi fa la post delle notifications
-// Controllo formattatore mentions
-// Vedi notifyTaggedUsers
