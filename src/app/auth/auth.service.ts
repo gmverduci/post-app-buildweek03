@@ -54,7 +54,7 @@ export class AuthService {
         this.router.navigate(['/login']);
     }
 
-    estore() {
+    restore() {
         const userJson = localStorage.getItem('user');
         if (!userJson) {
             return;
