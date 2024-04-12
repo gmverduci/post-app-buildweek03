@@ -3,26 +3,38 @@ import { environment } from 'src/environments/environment.development';
 import { User } from '../interface/user.interface';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Photo } from '../interface/photo.interface';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsersService {
-  apiUrl = environment.apiURL;
+    apiUrl = environment.apiURL;
+    photosUrl = `${this.apiUrl}photos`;
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
-getUsers() {
-  return this.http.get<User[]>(`${this.apiUrl}users`)
-}
+    getUsers() {
+        return this.http.get<User[]>(`${this.apiUrl}users`);
+    }
 
-getUser(id: number) {
-return this.http.get<User>(`${this.apiUrl}users/${id}`)
-}
+    getUser(id: number) {
+        return this.http.get<User>(`${this.apiUrl}users/${id}`);
+    }
 
-getUserByUsername(username: string) {
-  return this.getUsers().pipe(
-      map((users: User[]) => users.find((user: { username: string; }) => user.username === username) || null)
-  );
-}
+    getUserByUsername(username: string) {
+        return this.getUsers().pipe(
+            map(
+                (users: User[]) =>
+                    users.find(
+                        (user: { username: string }) =>
+                            user.username === username
+                    ) || null
+            )
+        );
+    }
+
+    getPhotos() {
+        return this.http.get<Photo[]>(this.photosUrl);
+    }
 }
