@@ -4,4 +4,5 @@ export interface Notification {
     message: string;
     authorId: number;
     postId: number;
+    read: boolean
 }

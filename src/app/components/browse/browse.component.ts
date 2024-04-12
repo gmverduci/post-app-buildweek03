@@ -52,15 +52,15 @@ export class BrowseComponent implements OnInit {
     }
 
     extractMentions(content: string): string[] {
-        const mentionRegex = /@(\w+)\b/g;
+        const mentionRegex = /@([\w.]+)\b/g;
         let match;
         const mentions = [];
-        console.log('Content:', content); // Controlla il contenuto per vedere se ci sono menzioni
+        console.log('Content:', content); 
         while ((match = mentionRegex.exec(content)) !== null) {
-            console.log('Match:', match); // Controlla ogni match trovato
+            console.log('Match:', match); 
             mentions.push(match[1]);
         }
-        console.log('Mentions extracted:', mentions); // Controlla le menzioni estratte
+        console.log('Mentions extracted:', mentions); 
         return mentions;
     }
 
@@ -97,6 +97,7 @@ export class BrowseComponent implements OnInit {
         console.log('Notifying tagged users...');
     
         const authorId = this.authSrv.getCurrentUserId();
+        console.log('USER ID CURRENT :', authorId)
         if (authorId === null) {
             console.error('Author ID could not be retrieved.');
             return;
@@ -108,6 +109,7 @@ export class BrowseComponent implements OnInit {
             message: `You were mentioned by`,
             authorId: authorId, 
             postId: newPost.id,
+            read: false
         }));
     
         await Promise.all(
