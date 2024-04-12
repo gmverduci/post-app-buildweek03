@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ToDo } from 'src/app/interface/to-do';
+import { TodoList } from 'src/app/interface/to-do';
 import { User } from 'src/app/interface/user.interface';
 import { ToDoServiceService } from 'src/app/services/to-do-service.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-to-do-list',
@@ -10,14 +11,26 @@ import { ToDoServiceService } from 'src/app/services/to-do-service.service';
 })
 export class ToDoListComponent implements OnInit {
 
-  toDo: ToDo[] = []
-  users: User[] = []
+  todos!: TodoList[];
+  users!: User[];
 
-  constructor(private toDoSrv: ToDoServiceService) { }
+  constructor(private todoService: ToDoServiceService, private userSrvc: UsersService) { }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
+    this.todoService.getTodos().subscribe((data) => {
+      this.todos = data;
+    })
+
+    this.userSrvc.getUsers().subscribe((data) => {
+      this.users = data;
+    });
   }
 
+  toggleCompletion(index: number): void {
+    const todo = this.todos[index];
+    todo.completed = !todo.completed;
+  }
 
 }
+
