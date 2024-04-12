@@ -1,8 +1,9 @@
 export interface User {
+    photoUrl: string;
     id: number;
     name: string;
     username: string;
-    email: string,
+    email: string;
     address: {
         street: string;
         suite: string;
