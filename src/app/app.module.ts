@@ -23,6 +23,7 @@ import { AlbumComponent } from './components/album/album.component';
 import { UserComponent } from './components/user/user.component';
 import { BrowseComponent } from './components/browse/browse.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         UserComponent,
         BrowseComponent,
         NavbarComponent,
+        ToDoListComponent,
     ],
     imports: [
         BrowserModule,
