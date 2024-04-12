@@ -63,6 +63,28 @@ export class AuthService {
         this.authSub.next(user);
     }
 
+    getCurrentUserId(): number | null {
+        const user = this.authSub.getValue();
+
+        if (!user) {
+            return null; 
+        }
+
+        if ('userId' in user) {
+            return user.userId as number | null;
+        }
+
+        if ('id' in user && typeof user.id === 'number') {
+            return user.id;
+        }
+
+        if ('id' in user && typeof user.id === 'string') {
+            return parseInt(user.id, 10);
+        }
+
+        return null; // Nessun tipo corrispondente
+    }
+
     private errors(err: any) {
         console.error(this.errors);
         switch (err.error) {
