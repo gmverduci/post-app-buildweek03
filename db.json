@@ -736,6 +736,13 @@
       "title": "Ciao Titti",
       "body": "@titti",
       "date": "2024-04-12T14:09:03.853Z"
+    },
+    {
+      "userId": 12,
+      "id": 108,
+      "title": "ttt",
+      "body": "@paolo",
+      "date": "2024-04-12T14:32:41.786Z"
     }
   ],
   "users": [
@@ -37291,6 +37298,16 @@
       "todoId": null,
       "read": false,
       "id": 2
+    },
+    {
+      "userId": 15,
+      "type": "mention",
+      "message": "You were mentioned",
+      "authorId": 12,
+      "postId": 108,
+      "todoId": null,
+      "read": false,
+      "id": 3
     }
   ]
 }
