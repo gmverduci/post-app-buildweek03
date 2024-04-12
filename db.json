@@ -729,6 +729,13 @@
       "title": "hhhhhh",
       "body": "@Samantha",
       "date": "2024-04-12T13:09:24.833Z"
+    },
+    {
+      "userId": 11,
+      "id": 107,
+      "title": "Ciao Titti",
+      "body": "@titti",
+      "date": "2024-04-12T14:09:03.853Z"
     }
   ],
   "users": [
@@ -975,9 +982,37 @@
     {
       "email": "gianni@gianni.com",
       "password": "$2a$10$PAUKru8AFoVGVYS6MMSBTOAixIjCz0mMeu7vXrHYjOsThK8uNsyK2",
-      "name": "gianni",
+      "username": "gianni",
       "images": "https://via.placeholder.com/600/20ed84",
       "id": 11
+    },
+    {
+      "email": "titti@titti.com",
+      "password": "$2a$10$JT.2KCzifWHofFp53EQy1OSgp5TweP3D/xpU6aWPj0G17FlIxLHfK",
+      "username": "titti",
+      "photoUrl": "https://via.placeholder.com/600/f66b97",
+      "id": 12
+    },
+    {
+      "email": "stefano@stefano.com",
+      "password": "$2a$10$u.gwvYPfnlMtphpflIcGVeWRLpvrl.ZrEHRAQ6SH7RXbVt.9GJlUe",
+      "username": "stefano",
+      "photoUrl": "https://via.placeholder.com/600/f66b97",
+      "id": 13
+    },
+    {
+      "email": "gabri@gabri.com",
+      "password": "$2a$10$fH4JlsuuWqjVF4pSxEW/SeYl.FQyUxbGBg7oYRVj1NrdCdm9wJnU6",
+      "username": "gabriele",
+      "photoUrl": "https://via.placeholder.com/600/f66b97",
+      "id": 14
+    },
+    {
+      "email": "paolo@paolo.com",
+      "password": "$2a$10$zab4eX.MNEKx4lig4PmtGOHQDATsSSJto5tNTXkRG4BIJy2gmkslm",
+      "username": "paolo",
+      "photoUrl": "https://via.placeholder.com/600/f66b97",
+      "id": 15
     }
   ],
   "photos": [
@@ -37246,6 +37281,16 @@
       "todoId": null,
       "read": false,
       "id": 1
+    },
+    {
+      "userId": 12,
+      "type": "mention",
+      "message": "You were mentioned",
+      "authorId": 11,
+      "postId": 107,
+      "todoId": null,
+      "read": false,
+      "id": 2
     }
   ]
 }
