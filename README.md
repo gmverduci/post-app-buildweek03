@@ -1,27 +1,40 @@
-# PostAppBuildweek03
+# Social Community:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+## Costruzione pagina:
 
-## Development server
+Login & Registrazione:
+_pagina per il login e la registrazione, possibile anche tramite google
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Home/Browse: 
+_visualizzazione post utenti con avatar, titolo, corpo del post
+_possibile modifica e rimozione dei post
+_creazione nuovo post tramite modal con form
 
-## Code scaffolding
+Todolist:
+_lista utenti e tasklist di ogni utente
+_possibilita di spuntare ogni  voce della lista per renderla svolta o meno
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Lista Utenti:
+_pagina con lista completa degli utenti
+_ogni utente presenta: avatar, nome, email e la propria lista di post 
+_ogni voce della lista post si evidenzia quando si va in hover
 
-## Build
+Notifiche Post: 
+_icona che evidenzia la presenza di notifiche quando si creano nuovi post
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installazioni:
 
-## Running unit tests
+ng-bootstrap/ng-bootstrap,
+angular mentions,
+ng g component GoogleSignin,
+abacritt/angularx-social-login@2.1.0,
+ng g guard auth --flat
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Gruppo4: 
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[Marcello Verduci(TL)](https://github.com/gmverduci/)
+[Francesco Naccari](https://github.com/FrancescoNaccari)
+[Stefano Fortezza](https://github.com/stefortezza)
+[Marco Di Candia](https://github.com/marco-di-candia)
+[Milo Zaffiri](https://github.com/Zaffirim)
+[Leonardo Maria Leoni](https://github.com/Leonardomarialeoni)
