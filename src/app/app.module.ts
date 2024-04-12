@@ -12,6 +12,10 @@ import {
     SocialAuthServiceConfig,
     GoogleLoginProvider,
 } from '@abacritt/angularx-social-login';
+import { MentionModule } from 'angular-mentions';
+
+
+
 import { GoogleSigninComponent } from './components/google-signin/google-signin.component';
 import { PostComponent } from './components/post/post.component';
 import { PhotoComponent } from './components/photo/photo.component';
@@ -41,6 +45,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         FormsModule,
         HttpClientModule,
         SocialLoginModule,
+        MentionModule
     ],
     providers: [
         {
