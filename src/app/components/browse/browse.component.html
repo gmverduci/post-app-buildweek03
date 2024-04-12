@@ -1,9 +1,9 @@
-<div class="container" *ngIf="users" >
-    <div class="row">
+<div class="container " *ngIf="users" >
+    <div class="row ">
         <div class="container-fluid text-center m-5 col-2">
             <ng-template #content let-c="close" let-d="dismiss">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">
+                <div class="modal-header ">
+                    <h4 class="modal-title " id="modal-basic-title">
                         Create New Post!
                     </h4>
                     <button
@@ -22,7 +22,7 @@
                                 id="title"
                                 name="title"
                                 required
-                                class="form-control"
+                                class="form-control "
                                 ngModel
                             />
                             <input
@@ -67,7 +67,7 @@
             </ng-template>
 
             <button
-                class="btn btn-lg btn-outline-primary"
+                class="btn btn-lg over btn-outline-light"
                 (click)="open(content)"
             >
                 Create New Post
