@@ -8,35 +8,40 @@ import { AuthGuard } from './auth/auth.guard';
 import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 
 const routes: Routes = [
-  {
-    path: "",
-    component: HomeComponent
-  },
-   {
-    path: "login",
-    component: LoginComponent
-  },
-  {
-    path: "browse",
-    component: BrowseComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: "user",
-    component: UserComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: "todolist",
-    component: ToDoListComponent,
-    canActivate: [AuthGuard]
-  },
-  
-
+    {
+        path: '',
+        component: HomeComponent,
+        children: [
+            {
+                path: 'browse',
+                component: BrowseComponent,
+                canActivate: [AuthGuard],
+            },
+        ],
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+    },
+    {
+        path: 'browse',
+        component: BrowseComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'user',
+        component: UserComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'todolist',
+        component: ToDoListComponent,
+        canActivate: [AuthGuard],
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
