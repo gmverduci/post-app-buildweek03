@@ -95,23 +95,29 @@ export class BrowseComponent implements OnInit {
 
     async notifyTaggedUsers(taggedUsers: User[], newPost: Post): Promise<void> {
         console.log('Notifying tagged users...');
-
+    
+        const authorId = this.authSrv.getCurrentUserId();
+        if (authorId === null) {
+            console.error('Author ID could not be retrieved.');
+            return;
+        }
+    
         const notifications = taggedUsers.map((user) => ({
             userId: user.id,
             type: 'mention',
             message: `You were mentioned by`,
+            authorId: authorId, 
             postId: newPost.id,
         }));
-
+    
         await Promise.all(
             notifications.map((notification) =>
                 this.notifSrv.addNotification(notification).toPromise()
             )
         );
-
+    
         console.log('Tagged users notified.');
     }
-
     open(content: any) {
         this.modalService.open(content);
     }
