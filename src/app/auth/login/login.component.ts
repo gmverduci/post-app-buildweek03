@@ -11,17 +11,19 @@ import { AuthService } from '../auth.service';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private router:Router,private authSrv:AuthService ) {}
+    constructor(private router: Router, private authSrv: AuthService) {}
     login(form: NgForm) {
         console.log(form.value);
         try {
-            this.authSrv.login(form.value).subscribe();
-            this.router.navigate(['/']);
+            this.authSrv.login(form.value).subscribe(() => {
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 300);
+            });
         } catch (error) {
             console.error(error);
         }
     }
-
 
     onSubmit(form: NgForm) {
         console.log(form.value);
@@ -32,8 +34,6 @@ export class LoginComponent {
             console.error(error);
         }
     }
-  
-
 
     @ViewChild('container') container!: ElementRef;
 
@@ -46,9 +46,6 @@ export class LoginComponent {
     }
 
     authSubscription!: Subscription;
-
-    
-  
 
     googleSignin(googleWrapper: any) {
         googleWrapper.click();
