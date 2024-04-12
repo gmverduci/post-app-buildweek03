@@ -40,4 +40,9 @@ export class PostComponent implements OnInit {
         console.log('After sorting:', this.posts); */
         });
     }
+
+    deletePost(id: number, index: number) {
+        this.postSrv.deletePost(id).subscribe();
+        this.posts.splice(index, 1);
+    }
 }
