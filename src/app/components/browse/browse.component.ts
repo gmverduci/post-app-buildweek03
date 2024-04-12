@@ -7,6 +7,7 @@ import { User } from 'src/app/interface/user.interface';
 import { Post } from 'src/app/interface/post.interface';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-browse',
@@ -24,7 +25,8 @@ export class BrowseComponent implements OnInit {
         private cdr: ChangeDetectorRef,
         private usersSrv: UsersService,
         private notifSrv: NotificationsService,
-        private authSrv: AuthService
+        private authSrv: AuthService,
+        private router: Router
     ) {
         // customize default values of modals used by this component tree
         config.backdrop = 'static';
@@ -42,11 +44,13 @@ export class BrowseComponent implements OnInit {
         });
     }
 
-    async processPostContent(content: NgForm['value']): Promise<{ processedContent: string, originalContent: NgForm['value'] }> {
+    async processPostContent(
+        content: NgForm['value']
+    ): Promise<{ processedContent: string; originalContent: NgForm['value'] }> {
         console.log('Processing post content...');
-    
+
         const processedContent = content.body;
-    
+
         console.log('Processed content:', processedContent);
         return { processedContent, originalContent: content };
     }
@@ -55,12 +59,12 @@ export class BrowseComponent implements OnInit {
         const mentionRegex = /@([\w.]+)\b/g;
         let match;
         const mentions = [];
-        console.log('Content:', content); 
+        console.log('Content:', content);
         while ((match = mentionRegex.exec(content)) !== null) {
-            console.log('Match:', match); 
+            console.log('Match:', match);
             mentions.push(match[1]);
         }
-        console.log('Mentions extracted:', mentions); 
+        console.log('Mentions extracted:', mentions);
         return mentions;
     }
 
@@ -95,29 +99,30 @@ export class BrowseComponent implements OnInit {
 
     async notifyTaggedUsers(taggedUsers: User[], newPost: Post): Promise<void> {
         console.log('Notifying tagged users...');
-    
+
         const authorId = this.authSrv.getCurrentUserId();
-        console.log('USER ID CURRENT :', authorId)
+        console.log('USER ID CURRENT :', authorId);
         if (authorId === null) {
             console.error('Author ID could not be retrieved.');
             return;
         }
-    
+
         const notifications = taggedUsers.map((user) => ({
             userId: user.id,
             type: 'mention',
-            message: `You were mentioned by`,
-            authorId: authorId, 
+            message: `You were mentioned`,
+            authorId: authorId,
             postId: newPost.id,
-            read: false
+            todoId: null,
+            read: false,
         }));
-    
+
         await Promise.all(
             notifications.map((notification) =>
                 this.notifSrv.addNotification(notification).toPromise()
             )
         );
-    
+
         console.log('Tagged users notified.');
     }
     open(content: any) {
@@ -125,31 +130,28 @@ export class BrowseComponent implements OnInit {
     }
 
     async save(form: NgForm) {
-        const { processedContent, originalContent } = await this.processPostContent(form.value);
+        const { processedContent, originalContent } =
+            await this.processPostContent(form.value);
         const mentions = this.extractMentions(processedContent);
         const taggedUsers = await this.getTaggedUsers(mentions);
-    
+
         const newPost: Post = {
-            userId: this.authSrv.getCurrentUserId() || 0, 
-            id: 0, 
-            title: originalContent.title, 
+            userId: this.authSrv.getCurrentUserId() || 0,
+            id: 0,
+            title: originalContent.title,
             body: processedContent,
-            date: new Date().toISOString(), 
+            date: new Date().toISOString(),
         };
-    
-        this.postSrv.newPost(newPost).subscribe(
-            (createdPost: Post) => {
-                console.log('New post created:', createdPost);
-                this.notifyTaggedUsers(taggedUsers, createdPost).then(() => {
-                    // Success
-                }).catch((error) => {
-                    console.error('Error notifying tagged users:', error);
-                });
-            },
-            (error) => {
-                console.error('Error creating new post:', error);
-            }
-        );
+
+        this.postSrv.newPost(newPost).subscribe((createdPost: Post) => {
+            console.log('New post created:', createdPost);
+            this.notifyTaggedUsers(taggedUsers, createdPost).then(() => {
+                this.router
+                    .navigateByUrl('/', { skipLocationChange: true })
+                    .then(() => {
+                        this.router.navigate(['/browse']);
+                    });
+            });
+        });
     }
-    
 }
