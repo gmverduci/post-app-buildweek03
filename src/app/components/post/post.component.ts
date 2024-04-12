@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Photo } from 'src/app/interface/photo.interface';
 import { Post } from 'src/app/interface/post.interface';
+import { PhotosService } from 'src/app/services/photos.service';
 import { PostsService } from 'src/app/services/posts.service';
 @Component({
     selector: 'app-post',
@@ -8,10 +10,15 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class PostComponent implements OnInit {
     posts!: Post[];
+    photos!: Photo[];
     minMilliseconds = 1618400000000;
     maxMilliseconds = 1618401000000;
+    editModeIndex: number | null = null;
 
-    constructor(private postSrv: PostsService) {}
+    constructor(
+        private postSrv: PostsService,
+        private photoSrv: PhotosService
+    ) {}
 
     ngOnInit() {
         console.log('ngOnInit attivato');
@@ -19,6 +26,9 @@ export class PostComponent implements OnInit {
             this.posts = data;
             this.filterPosts();
             console.log(this.posts);
+        });
+        this.photoSrv.getphotos().subscribe((photos) => {
+            this.photos = photos;
         });
     }
 
@@ -41,8 +51,21 @@ export class PostComponent implements OnInit {
         });
     }
 
+    getThumbnailUrl(userId: number): string | undefined {
+        const userPhoto = this.photos.find((photo) => photo.id === userId);
+        return userPhoto ? userPhoto.thumbnailUrl : undefined;
+    }
+
     deletePost(id: number, index: number) {
         this.postSrv.deletePost(id).subscribe();
         this.posts.splice(index, 1);
+    }
+
+    editPost(index: number) {
+        this.editModeIndex = index;
+    }
+
+    savePost(index: number) {
+        this.editModeIndex = null;
     }
 }

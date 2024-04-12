@@ -9,6 +9,9 @@ import { Photo } from '../interface/photo.interface';
     providedIn: 'root',
 })
 export class UsersService {
+    getUsersByIds(uniqueUserIds: number[]) {
+        throw new Error('Method not implemented.');
+    }
     apiUrl = environment.apiURL;
     photosUrl = `${this.apiUrl}photos`;
 

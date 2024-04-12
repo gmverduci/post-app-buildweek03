@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { Post } from '../interface/post.interface';
+import { Photo } from '../interface/photo.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PostsService {
     apiURL = environment.apiURL;
+    photosUrl = `${this.apiURL}photos`;
 
     constructor(private http: HttpClient) {}
 
@@ -23,4 +25,5 @@ export class PostsService {
     deletePost(id: number) {
         return this.http.delete(`${this.apiURL}posts/${id}`);
     }
+
 }
