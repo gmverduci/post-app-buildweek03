@@ -4,19 +4,19 @@ import { environment } from 'src/environments/environment.development';
 import { Post } from '../interface/post.interface';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class PostsService {
+    apiURL = environment.apiURL;
 
-  apiURL = environment.apiURL;
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+    getPosts() {
+        return this.http.get<Post[]>(`${this.apiURL}posts`);
+    }
 
-  getPosts() {
-    return this.http.get<Post[]>(`${this.apiURL}posts`);
-}
-
-newPost(data: Post) {
-  return this.http.post<Post>(`${this.apiURL}posts`, data);
-}
+    newPost(data: Post) {
+        const postWithDate: Post = { ...data, date: new Date().toISOString() };
+        return this.http.post<Post>(`${this.apiURL}posts`, postWithDate);
+    }
 }
