@@ -11,7 +11,7 @@ export class NotificationsService {
     apiUrl = environment.apiURL;
 
     private notificationSub = new BehaviorSubject<Notification[] | null>(null);
-    notifications$ = this.notificationSub.asObservable;
+    notifications$ = this.notificationSub.asObservable();
 
     constructor(private http: HttpClient) {}
 
@@ -23,7 +23,7 @@ export class NotificationsService {
                 console.log('Notification added successfully:', response);
             }),
             catchError((error) => {
-                console.error('Error adding notification:', error); // Log any errors that occur
+                console.error('Error adding notification:', error);
                 return throwError(
                     'Something went wrong with adding notification.'
                 );
@@ -34,8 +34,15 @@ export class NotificationsService {
     getNotifications() {
         this.http
             .get<Notification[]>(`${this.apiUrl}notifications`)
-            .subscribe((data) => {
-                this.notificationSub.next(data);
-            });
+            .subscribe(
+                (data) => {
+                    this.notificationSub.next(data);
+                },
+                (error) => {
+                    console.error('Error getting notifications:', error);
+                    
+                    this.notificationSub.next([]);
+                }
+            );
     }
 }
