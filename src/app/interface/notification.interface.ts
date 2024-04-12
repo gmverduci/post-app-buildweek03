@@ -3,6 +3,7 @@ export interface Notification {
     type: string;
     message: string;
     authorId: number;
-    postId: number;
+    postId: number | null;
+    todoId: number | null;
     read: boolean
 }
